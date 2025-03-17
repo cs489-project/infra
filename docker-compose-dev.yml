@@ -39,16 +39,16 @@ services:
     image: redis
     ports:
       - 6379:6379
-  minio:
-    # https://hub.docker.com/r/bitnami/minio
-    container_name: minio
-    image: bitnami/minio
-    ports:
-      - 9000:9000 # API port
-      - 9001:9001 # RMI port
-    environment:
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+  # minio:
+  #   # https://hub.docker.com/r/bitnami/minio
+  #   container_name: minio
+  #   image: bitnami/minio
+  #   ports:
+  #     - 9000:9000 # API port
+  #     - 9001:9001 # RMI port
+  #   environment:
+  #     - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+  #     - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
   frontend:
     container_name: frontend
     build:
