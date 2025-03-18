@@ -4,7 +4,8 @@ services:
     container_name: nginx
     image: nginx
     volumes:
-      - ./nginx/conf-dev:/etc/nginx/conf.d
+      - ./nginx/conf-prod:/etc/nginx/conf.d
+      - ./prod-build:/usr/share/nginx/html
     ports:
       - "80:80"
     environment:
@@ -49,14 +50,15 @@ services:
   #   environment:
   #     - MINIO_ROOT_USER=${MINIO_ROOT_USER}
   #     - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
-  frontend:
-    container_name: frontend
+  frontend-builder:
+    container_name: frontend-builder
     build:
       context: ../frontend
-      dockerfile: ../infra/frontend/Dockerfile
+      dockerfile: ../infra/frontend-builder/Dockerfile
     volumes:
       - ../frontend:/app
-    command: bash -c "npm install && npm run dev"
+      - ./prod-build:/app/dist
+    command: bash -c "npm install && npm run build"
     ports:
       - 8080:5173
   backend:
