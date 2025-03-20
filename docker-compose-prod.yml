@@ -68,7 +68,7 @@ services:
       dockerfile: ../infra/backend/Dockerfile
     volumes:
       - ../backend:/code
-    command: flask run --debug
+    command: flask run
     ports:
       - 8888:5000
     environment:
