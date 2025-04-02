@@ -4,15 +4,28 @@ services:
     container_name: nginx
     image: nginx
     volumes:
-      - ./nginx/conf-prod:/etc/nginx/conf.d
+      - ./nginx/conf-prod:/etc/nginx/conf.d:ro
       - ./prod-build:/usr/share/nginx/html
+      - ./ssl:/etc/nginx/ssl
     ports:
       - "80:80"
+      - "443:443"
     environment:
       - NGINX_HOST=localhost
-      - NGINX_PORT=80
     depends_on:
-      - backend
+      backend:
+        condition: service_started
+      frontend-builder:
+        condition: service_completed_successfully
+      ssl-generator:
+        condition: service_completed_successfully
+  ssl-generator:
+    # https://hub.docker.com/_/alpine
+    container_name: ssl-generator
+    image: alpine
+    volumes:
+      - ./ssl:/ssl
+    command: /ssl/keygen.sh
   postgres:
     # https://hub.docker.com/_/postgres
     container_name: postgres
