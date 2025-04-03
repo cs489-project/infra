@@ -30,8 +30,6 @@ services:
     # https://hub.docker.com/_/postgres
     container_name: postgres
     image: postgres
-    ports:
-      - 5432:5432
     shm_size: 128mb
     user: postgres
     environment:
@@ -51,18 +49,6 @@ services:
     # https://hub.docker.com/_/redis
     container_name: redis
     image: redis
-    ports:
-      - 6379:6379
-  # minio:
-  #   # https://hub.docker.com/r/bitnami/minio
-  #   container_name: minio
-  #   image: bitnami/minio
-  #   ports:
-  #     - 9000:9000 # API port
-  #     - 9001:9001 # RMI port
-  #   environment:
-  #     - MINIO_ROOT_USER=${MINIO_ROOT_USER}
-  #     - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
   frontend-builder:
     container_name: frontend-builder
     build:
@@ -72,8 +58,6 @@ services:
       - ../frontend:/app
       - ./prod-build:/app/dist
     command: bash -c "npm install && npm run build"
-    ports:
-      - 8080:5173
   backend:
     container_name: backend
     build:
@@ -82,8 +66,6 @@ services:
     volumes:
       - ../backend:/code
     command: flask run
-    ports:
-      - 8888:5000
     environment:
       - PYTHONDONTWRITEBYTECODE=1
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
